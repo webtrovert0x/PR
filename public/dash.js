@@ -1,0 +1,32 @@
+// Import the functions you need from the SDKs you need
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getAuth, signOut} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBmXjvqkmY_2s07Vav9GfnScx0pUHINKv4",
+  authDomain: "quickie-6a2dc.firebaseapp.com",
+  databaseURL: "https://quickie-6a2dc-default-rtdb.firebaseio.com",
+  projectId: "quickie-6a2dc",
+  storageBucket: "quickie-6a2dc.firebasestorage.app",
+  messagingSenderId: "631615726240",
+  appId: "1:631615726240:web:ee50738ca01b389ef65fc5"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const signOutt = () => {
+    signOut(auth).then(() => {
+  setTimeout(() => {
+    window.location.href = 'index.html'
+  }, 1000);
+    }).catch((error) => {
+  // An error happened.
+}   );
+}
+  
+window.signOutt = signOutt
