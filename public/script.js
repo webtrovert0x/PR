@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, GithubAuthProvider, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, GithubAuthProvider, sendSignInLinkToEmail } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
   // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -30,7 +30,7 @@ const signGoog = ()=> {
      if (user){
       setTimeout(() => {
         window.location.href = 'dashboard.html'
-      }, 1000)
+      }, 10)
     }else {
       window.location.href = 'index.html'
     }
@@ -42,30 +42,7 @@ const signGoog = ()=> {
    })
     
   }
-  const signPass = () => {
-    signInWithEmailAndPassword(auth, email, password)
-
-  .then((result) => {
-    // Signed in 
-    const user = result.user;
-    // ...
-    if (user){
-      setTimeout(() => {
-        window.location.href = 'dashboard.html'
-      }, 1000)
-    }else {
-      window.location.href = 'index.html'
-    }
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(error);
-    
-  });
   
-
-  }
   const signGit =() => {
     
   signInWithPopup(auth, provider2)
@@ -89,7 +66,40 @@ const signGoog = ()=> {
     // ...
   });
   }
-  
+  const signApp =() => {
+    
+    coment.innerHTML = `<span style="color: red;">apple developer subscrition is $100. I'm broke 😭</span>`
+  }
+  /**const disRandomUser =() => {
+    const randomIndex = Math.floor(Math.random()* user.length);
+    const randomUser = user[randomIndex]
+    disUser = `<img src="${user.photoURL}" alt=""  width="50px" height="50px" style=" border-radius: 50%;">
+        <br> Name: ${user.displayName} <br> Email Address: ${user.email},`
+  }*/
+ 
+  const signPass =()=> {
+    coment.innerHTML = `
+    <span style="color: white;">Login link sent to Email 😭</span>
+    `
+sendSignInLinkToEmail(auth, email, actionCodeSettings)
+  .then(() => {
+   
+    // The link was successfully sent. Inform the user.
+    // Save the email locally so you don't need to ask the user for it again
+    // if they open the link on the same device.
+    window.localStorage.setItem('emailForSignIn', email);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ...
+  });
+  }
+
+
   window.signGoog = signGoog
   window.signGit = signGit
   window.signPass = signPass
+  window.signApp = signApp
+  window.disRandomUser = disRandomUser 

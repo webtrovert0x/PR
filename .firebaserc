@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "quickie-6a2dc"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
