@@ -19,6 +19,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const userdp= []
+const posts = timeline
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -47,19 +49,25 @@ const signOutt = () => {
   // An error happened.
 }   );
 }
-const submit = () => {
+window.signOutt = signOutt
+const submitt = () => {
     if (inputt.value.trim() == ''){
       alert('post cannot be empty')
     }
     else {
       setTimeout(() => {
-        timeline.innerHTML += ` <div style="height: 30vh; width: inherit; justify-self: center; border-bottom: 1px gray solid;"> ${inputt.value} </div> `
+        timeline.innerHTML += ` <div style="height: 30vh; width: inherit; justify-self: center; border-bottom: 1px gray solid; color: white;"> ${inputt.value} </div>
+        `
+        
       }, 1000);
       
+      inputt.value = ''
+      
     }
+    
  }
  
  
+ 
 
-  window.submit = submit
-window.signOutt = signOutt
+  window.submitt = submitt
