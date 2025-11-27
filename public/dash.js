@@ -19,7 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const userdp= []
-const posts = timeline
+const posts = []
 
 
 onAuthStateChanged(auth, (user) => {
@@ -56,8 +56,8 @@ const submitt = () => {
     }
     else {
       setTimeout(() => {
-        timeline.innerHTML += ` <div style="height: 30vh; width: inherit; justify-self: center; border-bottom: 1px gray solid; color: white;"> ${inputt.value} </div>
-        `
+        posts.push(inputt.value)
+        
         
       }, 1000);
       
@@ -69,5 +69,4 @@ const submitt = () => {
  
  
  
-
   window.submitt = submitt
