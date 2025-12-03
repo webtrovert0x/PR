@@ -18,26 +18,26 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const userdp= []
+let userdp = 'https://via.placeholder.com/48';
 const posts = []
+let currentUser= null;
 
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    //const uid = user.uid;
     console.log(user);
-    show.innerHTML += `
-      <img src="${user.photoURL}" alt=""  width="50px" height="50px" style=" border-radius: 50%;">
-        
-        `
-    // ...
+    currentUser = user;
+    userdp = user.photoURL || 'https://via.placeholder.com/48'; // assign here
+    
+    show.innerHTML = `
+      <img src="${userdp}" alt="" width="50px" height="50px" style="border-radius: 50%;">
+    `;
   } else {
     setTimeout(() => {
-        window.location.href = 'index.html'
+      window.location.href = 'index.html';
     }, 1000);
-  }});
+  }
+});
 
 
 const signOutt = () => {
@@ -51,22 +51,42 @@ const signOutt = () => {
 }
 window.signOutt = signOutt
 const submitt = () => {
-    if (inputt.value.trim() == ''){
+    if (inputt.value.trim() === ''){
       alert('post cannot be empty')
     }
     else {
       setTimeout(() => {
         posts.push(inputt.value)
-        
-        
-      }, 1000);
+        timeline()
+        inputt.value=''
+      }, 10);
       
-      inputt.value = ''
+      
       
     }
     
  }
- 
+ function timeline(user) {
+  shows.innerHTML += ` <div style="display: flex;  color: white; padding: 2vw">
+
+      <img src="${userdp}" alt="" width="30px" height="30px" style="border-radius: 50%;">
+      <div style="display: flex; gap: 10px;flex-direction: column; margin-left: 1vw;">
+        <div style="display: flex; gap: 10px;">
+
+        
+        <a href="#" style="color: white;">${currentUser.displayName}</a> 
+        <span style="font-size: medium; color: #71767B;">@${currentUser.displayName.slice(9, 16)}</span>
+       </div>
+       <div>
+        ${posts.join('<br>')}
+       </div>
+      </div>
+      
+    </div> `
+ }
  
  
   window.submitt = submitt
+
+
+
