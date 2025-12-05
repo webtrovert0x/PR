@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  import { getDatabase, ref, push, set, onValue } 
+from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
   // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,7 +23,7 @@ const auth = getAuth(app);
 let userdp = 'https://via.placeholder.com/48';
 const posts = []
 let currentUser= null;
-
+const db = getDatabase(app);
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -50,43 +52,60 @@ const signOutt = () => {
 }   );
 }
 window.signOutt = signOutt
-const submitt = () => {
-    if (inputt.value.trim() === ''){
-      alert('post cannot be empty')
-    }
-    else {
-      setTimeout(() => {
-        posts.push(inputt.value)
-        timeline()
-        inputt.value=''
-      }, 10);
-      
-      
-      
-    }
-    
- }
- function timeline(user) {
-  shows.innerHTML += ` <div style="display: flex;  color: white; padding: 2vw">
+const submitt = async () => {
+  if (inputt.value.trim() === "") {
+    alert("Post cannot be empty");
+    return;
+  }
 
-      <img src="${userdp}" alt="" width="30px" height="30px" style="border-radius: 50%;">
-      <div style="display: flex; gap: 10px;flex-direction: column; margin-left: 1vw;">
-        <div style="display: flex; gap: 10px;">
+  const postRef = push(ref(db, "posts"));
 
-        
-        <a href="#" style="color: white;">${currentUser.displayName}</a> 
-        <span style="font-size: medium; color: #71767B;">@${currentUser.displayName.slice(9, 16)}</span>
-       </div>
-       <div>
-        ${posts.join('<br>')}
-       </div>
+  await set(postRef, {
+    text: inputt.value,
+    uid: currentUser.uid,
+    username: currentUser.displayName,
+    photoURL: userdp,
+    createdAt: Date.now()
+  });
+
+  inputt.value = "";
+};
+window.submitt = submitt;
+const shows = document.getElementById("shows");
+
+onValue(ref(db, "posts"), (snapshot) => {
+  shows.innerHTML = "";
+
+  const postsObj = snapshot.val();
+  if (!postsObj) return;
+
+  const postsArr = Object.values(postsObj)
+    .sort((a, b) => b.createdAt - a.createdAt);
+
+  postsArr.forEach(p => {
+    shows.innerHTML += `
+      <div style="display:flex;color:white;padding:2vw">
+        <img src="${p.photoURL}" width="30" height="30" style="border-radius:50%;">
+        <div style="margin-left:1vw;">
+          <div style="display:flex;gap:10px;">
+            <a href="#" style="color:white;">${p.username}</a>
+            <span style="color:#71767B;">@${p.username.slice(9,16)}</span>
+          </div>
+          <div>${p.text}</div>
+          <div style="display: flex; justify-content: space-between; width: 100%;">
+        <img src="./images/uil--comment.svg" alt=""  width="20px"> 
+        <img src="./images/weui--like-outlined.svg" alt="" width="20px">
+        <img src="./images/bx--repost.svg" alt="" width="20px">
+        <img src="./images/material-symbols--bookmark-outline.svg" alt="" width="20px">
       </div>
-      
-    </div> `
- }
+        </div>
+        
+      </div>
+    `;
+  });
+});
  
  
-  window.submitt = submitt
 
 
 

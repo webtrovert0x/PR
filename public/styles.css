@@ -1,4 +1,4 @@
-/* ...existing code... */
+
 :root {
   --bg: #000;
   --panel: #16181c;
@@ -23,8 +23,14 @@ body {
   gap: 2rem;
   min-height: 100vh;
 }
-#poost {
-  f
+.navon {
+  display: none ;
+}
+.whate {
+  display: none;
+}
+.navone img {
+  margin-right: 29vw !important;
 }
 @media (max-width: 1100px) {
   body { grid-template-columns: 80px minmax(0,600px) 0; }
@@ -39,6 +45,20 @@ body {
   .sidebar-left .main-nav { flex-direction: row; overflow-x: auto; }
   .sidebar-left .compose-btn { display: none; }
   .feed { padding-bottom: 70px; }
+
+  .navon {
+  display: block !important;
+  position: fixed !important;
+  z-index: 100 !important;
+ background-color: #000 !important;
+ width: 100% !important;
+}
+.feed {
+  margin-top: 10vh !important;
+}
+.navone{
+  display: none !important;
+}
 }
 
 .sidebar-left {
@@ -102,6 +122,7 @@ body {
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
   min-height: 100vh;
+  
 }
 
 .composer {
